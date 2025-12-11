@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: ccf-framework
+  threads:
+    virtual:
+      enabled: true
+
+logging:
+  level:
+    com.ccf: DEBUG
+    org.springframework: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+
+ccf:
+  contracts:
+    directory: classpath:contracts
+  monitoring:
+    enabled: true

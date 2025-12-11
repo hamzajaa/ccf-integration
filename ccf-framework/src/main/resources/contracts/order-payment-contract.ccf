@@ -1,0 +1,20 @@
+CONTRACT OrderPaymentConsistency {
+
+  VERSION: 1.0.0
+
+  SERVICES: [OrderService, PaymentService]
+
+  CONSISTENCY_LEVEL: CAUSAL
+
+  INVARIANTS: {
+    - Order.status = CONFIRMED IMPLIES Payment.status = AUTHORIZED
+    - Order.total = Payment.amount
+    - Order.status = CANCELLED IMPLIES Payment.status IN [DECLINED, REFUNDED]
+  }
+
+  SAGA: {
+    STEP CreateOrder
+    STEP AuthorizePayment
+    STEP ConfirmOrder
+  }
+}
