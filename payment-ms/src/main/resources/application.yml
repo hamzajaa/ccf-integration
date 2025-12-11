@@ -1,0 +1,37 @@
+spring:
+  application:
+    name: payment-service
+  threads:
+    virtual:
+      enabled: true
+
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/paymentdb
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: payment-service-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
+        spring.json.type.mapping: >
+          orderCreated:com.payment.event.OrderCreatedEvent,
+          orderConfirmed:com.payment.event.OrderConfirmedEvent,
+          orderCancelled:com.payment.event.OrderCancelledEvent
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.add.type.headers: false
+
+server:
+  port: 8082
+
+logging:
+  level:
+    com.payment: DEBUG
+    com.ccf: DEBUG
