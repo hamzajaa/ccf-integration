@@ -15,6 +15,7 @@ import java.util.List;
 public class CreateOrderRequest {
     private String customerId;
     private List<OrderItemDto> items;
+    private BigDecimal totalPrice;
 
     @Data
     @Builder

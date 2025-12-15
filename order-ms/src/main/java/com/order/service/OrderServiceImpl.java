@@ -40,6 +40,11 @@ public class OrderServiceImpl implements OrderService {
                 .map(item -> item.getPrice().multiply(BigDecimal.valueOf(item.getQuantity())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
+        if (!total.equals(request.getTotalPrice())) {
+            log.error("Contract violation: TOTAL_MATCH invariant failed");
+            throw new RuntimeException("Expected: " + total + " , " + "Got: " + request.getTotalPrice());
+        }
+
         Order order = Order.builder()
                 .customerId(request.getCustomerId())
                 .totalAmount(total)
